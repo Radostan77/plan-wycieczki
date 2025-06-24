@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Wyjazdu Rowerowego - Międzygórze</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header p, .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .bike-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .schedule {
+            padding: 0;
+        }
+
+        .day-section {
+            border-bottom: 1px solid #eee;
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 20px 40px;
+            font-size: 1.4em;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .day-content {
+            padding: 0;
+        }
+
+        .schedule-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            padding: 20px 40px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .schedule-item:hover {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transform: translateX(10px);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .time {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            padding-right: 20px;
+        }
+
+        .time::before {
+            content: '🕐';
+            margin-right: 8px;
+        }
+
+        .activity {
+            color: #34495e;
+            line-height: 1.6;
+            font-size: 1.05em;
+        }
+
+        .activity strong {
+            color: #2c3e50;
+        }
+        
+        .website-link {
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .website-link:hover {
+            opacity: 0.7;
+        }
+
+        .website-link svg {
+            width: 18px;
+            height: 18px;
+            fill: #2980b9;
+        }
+
+        .activity .stats {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+            border-left: 4px solid #28a745;
+        }
+
+        .meal {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 4px solid #ffc107;
+        }
+
+        .activity-icon {
+            margin-right: 8px;
+            display: inline-block;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .maps-section {
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .provider-section {
+            margin-bottom: 50px;
+        }
+        .provider-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .provider-heading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-size: 1.8em;
+        }
+        .provider-heading svg {
+            height: 35px;
+            margin-right: 15px;
+            fill: currentColor;
+        }
+
+        .map-container {
+            margin-bottom: 30px;
+        }
+        
+        .map-container:last-child {
+            margin-bottom: 0;
+        }
+
+        .map-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .strava-embed-placeholder {
+            margin-bottom: 15px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .route-section {
+            margin-bottom: 50px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .route-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .route-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .direction {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .direction-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+        }
+        
+        .direction-header {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .arrow {
+            font-size: 1.5rem;
+        }
+        
+        .to { color: #27ae60; }
+        .from { color: #e67e22; }
+        
+        .car-group {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f1f2f6;
+            border-radius: 8px;
+            border-left: 3px solid #3498db;
+        }
+        
+        .car-number {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .passengers {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+        
+        .bike-info {
+            color: #27ae60;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .motorcycle {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+        
+        .already-there {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        
+        .single-direction {
+            display: block;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .drivers-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+        
+        .drivers-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .drivers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .driver-card {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .summary {
+            background: #e8f5e8;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .summary h3 {
+            color: #27ae60;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #27ae60;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .direction {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="bike-icon">🚵‍♂️</div>
+            <h1>Plan Wyjazdu Rowerowego</h1>
+            <div class="subtitle">Międzygórze • 26-29 czerwca 2025</div>
+        </div>
+
+        <div class="schedule">
+            <div class="day-section">
+                <div class="day-header">🗓️ Czwartek, 26 czerwca 2025</div>
+                <div class="day-content">
+                    <div class="schedule-item meal">
+                        <div class="time">18:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🏨</span>
+                            <strong>Przyjazd</strong>
+                            <a href="https://villapepita.pl/" target="_blank" rel="noopener noreferrer" class="website-link" title="Otwórz stronę hotelu">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                            <br>
+                            Kolacja w postaci suchego prowiantu
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-header">🗓️ Piątek, 27 czerwca 2025</div>
+                <div class="day-content">
+                    <div class="schedule-item meal">
+                        <div class="time">09:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🍳</span>
+                            <strong>Śniadanie</strong><br>
+                            <div class="stats">Gotowe od 8:00</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">09:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🔧</span>
+                            <strong>Odbiór i przygotowanie sprzętu MTB</strong>
+                            <a href="https://assets.specialized.com/i/specialized/95225-60_LEVO-COMP-ALLOY-G3-UL-BLK-DOVGRY-BLK_HERO-PDP?$scom-pdp-product-image-xl$&fmt=webp" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz rower">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">10:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🚴‍♂️</span>
+                            <strong>Wyjazd w kierunku Dolni Morava</strong>
+                            <a href="https://www.dolnimorava.cz/pl/single-trails" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz trasy">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                            <br>
+                            <div class="stats">15km • wymagający podjazd 600m ↗️</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">12:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🚡</span>
+                            <strong>Wjazd kolejką na Dolni Morava z rowerami</strong>
+                            <a href="https://www.dolnimorava.cz/pl/single-trails" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz trasy">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                            <br>
+                            Zjazd FLOW TRAIL
+                            <div class="stats">7km • 100m ↗️ • 450m ↘️</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item meal">
+                        <div class="time">14:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🍽️</span>
+                            <strong>Drugi wjazd z rowerami i lunch w knajpie na stoku</strong>
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">15:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🌲</span>
+                            <strong>Przejazd traversem przez Narodowy Rezerwat</strong><br>
+                            Przyrody Králický Sněžník
+                            <div class="stats">16km • 100m ↗️</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">16:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">⛰️</span>
+                            <strong>Podjazd śmierci z Czech do Polski</strong><br>
+                            <div class="stats">15% do 18% • 500m ↗️</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">17:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🏁</span>
+                            <strong>Zjazdówka z granicy do domu</strong><br>
+                            <div class="stats">16km</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">18:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🏨</span>
+                            <strong>Dojazd do hotelu i szybki refresh</strong>
+                            <a href="https://villapepita.pl/" target="_blank" rel="noopener noreferrer" class="website-link" title="Otwórz stronę hotelu">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item meal">
+                        <div class="time">19:15</div>
+                        <div class="activity">
+                            <span class="activity-icon">🚗</span>
+                            <strong>Wyjazd na kolację - Puchaczówka</strong>
+                            <a href="https://puchaczowka.pl/restauracja/" target="_blank" rel="noopener noreferrer" class="website-link" title="Otwórz stronę restauracji">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item meal">
+                        <div class="time">19:45</div>
+                        <div class="activity">
+                            <span class="activity-icon">🍽️</span>
+                            <strong>Kolacja w Puchaczówka</strong>
+                             <a href="https://puchaczowka.pl/restauracja/" target="_blank" rel="noopener noreferrer" class="website-link" title="Otwórz stronę restauracji">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">22:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🏨</span>
+                            <strong>Powrót z kolacji</strong>
+                            <a href="https://villapepita.pl/" target="_blank" rel="noopener noreferrer" class="website-link" title="Otwórz stronę hotelu">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">00:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">💤</span>
+                            <strong>Do spania</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-header">🗓️ Sobota, 28 czerwca 2025</div>
+                <div class="day-content">
+                    <div class="schedule-item meal">
+                        <div class="time">09:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🍳</span>
+                            <strong>Śniadanie</strong>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">09:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🔧</span>
+                            <strong>Przygotowanie sprzętu MTB</strong>
+                            <a href="https://assets.specialized.com/i/specialized/95225-60_LEVO-COMP-ALLOY-G3-UL-BLK-DOVGRY-BLK_HERO-PDP?$scom-pdp-product-image-xl$&fmt=webp" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz rower">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">10:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🚴‍♂️</span>
+                            <strong>Wyjazd SingleTrack</strong><br>
+                            Pętla Pod śnieżnikiem
+                            <a href="https://singletrackglacensis.eu/track/petla-pod-snieznikiem/" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz trasę">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a> • Ostoja
+                             <a href="https://www.bikeski.pl/s/pl/86/petla-ostoja" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz trasę">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                            <div class="stats">Pętla: 3,3km • 150m ↗️ | Ostoja: 6,7km • 125m ↗️</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">11:15</div>
+                        <div class="activity">
+                            <span class="activity-icon">💧</span>
+                            <strong>Refresh na parkingu Jodłów / Kamienny Garb</strong>
+                             <a href="https://odtur.pl/atrakcje/jodlow-parking-ostoja-w-jodlowie-50320.html" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz parking">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">11:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🌲</span>
+                            <strong>Pętla Jodłów</strong>
+                             <a href="https://dolnyslaskrowerem.pl/trasa/glacensis-singletrack-jodlow-dot101/" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz trasę">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                            <br>
+                            <div class="stats">8,2km • 177m ↗️</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">12:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🚴‍♂️</span>
+                            <strong>Przejazd do Międzylesia</strong><br>
+                            <div class="stats">8km</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item meal">
+                        <div class="time">12:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🏪</span>
+                            <strong>Żabka w Międzylesiu</strong>
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">13:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🚴‍♂️</span>
+                            <strong>Pętla Międzylesie</strong>
+                            <a href="https://www.bikeski.pl/s/pl/87/petla-miedzylesie" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz trasę">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                            <br>
+                            <div class="stats">9km • 230m ↗️</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item meal">
+                        <div class="time">14:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🐟</span>
+                            <strong>Pstrąg w Psarach</strong>
+                            <a href="https://www.facebook.com/pstragwpisarach/" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz na Facebooku">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                            <br>
+                            + ładowanie rowerów dla chętnych
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">15:45</div>
+                        <div class="activity">
+                            <span class="activity-icon">🚴‍♂️</span>
+                            <strong>Powrót na Parking Jodłów</strong><br>
+                            <div class="stats">13km • 450m ↗️</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">17:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🌲</span>
+                            <strong>Pętla Ostoja i Pod Śnieżnikiem</strong><br>
+                            <div class="stats">Ostoja: 7,1km • 150m ↗️ | Pod Śnieżnikiem: 3km • 20m ↗️</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">18:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🏨</span>
+                            <strong>Dojazd do hotelu i szybki refresh</strong>
+                            <a href="https://villapepita.pl/" target="_blank" rel="noopener noreferrer" class="website-link" title="Otwórz stronę hotelu">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">19:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🚴‍♂️</span>
+                            <strong>Zwrot rowerów</strong>
+                        </div>
+                    </div>
+                    <div class="schedule-item meal">
+                        <div class="time">19:45</div>
+                        <div class="activity">
+                            <span class="activity-icon">🚗</span>
+                            <strong>Wyjazd na kolację - Orle Gniazdo</strong>
+                            <a href="https://www.orlegniazdoszklary.pl/" target="_blank" rel="noopener noreferrer" class="website-link" title="Otwórz stronę restauracji">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item meal">
+                        <div class="time">20:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🍽️</span>
+                            <strong>Kolacja - Orle Gniazdo</strong>
+                             <a href="https://www.orlegniazdoszklary.pl/" target="_blank" rel="noopener noreferrer" class="website-link" title="Otwórz stronę restauracji">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">23:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🏨</span>
+                            <strong>Powrót do Hotelu</strong>
+                             <a href="https://villapepita.pl/" target="_blank" rel="noopener noreferrer" class="website-link" title="Otwórz stronę hotelu">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="day-header">🗓️ Niedziela, 29 czerwca 2025</div>
+                <div class="day-content">
+                    <div class="schedule-item meal">
+                        <div class="time">09:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🍳</span>
+                            <strong>Śniadanie</strong>
+                        </div>
+                    </div>
+                    <div class="schedule-item highlight">
+                        <div class="time">09:30</div>
+                        <div class="activity">
+                            <span class="activity-icon">🥾</span>
+                            <strong>Treking na Śnieżnik</strong><br>
+                            Dla twardzieli
+                            <div class="stats">3h • 700m ↗️</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item meal">
+                        <div class="time">13:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">🍽️</span>
+                            <strong>Lunch na Śnieżniku</strong>
+                             <a href="https://www.schroniskonasniezniku.eu/" target="_blank" rel="noopener noreferrer" class="website-link" title="Zobacz stronę schroniska">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="time">17:00</div>
+                        <div class="activity">
+                            <span class="activity-icon">👋</span>
+                            <strong>Refresh w hotelu i pożegnanie</strong>
+                             <a href="https://villapepita.pl/" target="_blank" rel="noopener noreferrer" class="website-link" title="Otwórz stronę hotelu">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320 0H224L192 32H0V416H32L64 448H448l32-32H512V96L480 64H352L320 0zM64 128V384H352V128H64zM448 384h-32V128h32V384z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="maps-section">
+            <div class="provider-section">
+                <h2 class="provider-heading">
+                    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M960 896V128h-96v128h-96V128H256v128H160V128H64v768h96V768h96v128h512V768h96v128h96zM416 384h192c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8H416c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8zm0 192h192c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8H416c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8z"/></svg>
+                    Komoot
+                </h2>
+                <div class="map-container">
+                   <a href="https://www.komoot.com/tour/2353965768?share_token=aCExoHAAxlHE9yqcLfN7Hj7uKo9mWZXI8zexSqSOBl8qkr4b4t&ref=profile" target="_blank" rel="nofollow noopener noreferrer"><img src="https://www.komoot.com/tour/2353965768/embed?share_token=aCExoHAAxlHE9yqcLfN7Hj7uKo9mWZXI8zexSqSOBl8qkr4b4t&image=1&hm=true&profile=1&width=640&height=700" width="640" height="700"/></a>
+                </div>
+                <div class="map-container">
+                   <a href="https://www.komoot.com/tour/2353969530?share_token=akbz3HVDxOZ3cnp85Px2fwp8JFtDA5U6YopA06BFPQe1lgjSW2&ref=profile" target="_blank" rel="nofollow noopener noreferrer"><img src="https://www.komoot.com/tour/2353969530/embed?share_token=akbz3HVDxOZ3cnp85Px2fwp8JFtDA5U6YopA06BFPQe1lgjSW2&image=1&hm=true&profile=1&width=640&height=700" width="640" height="700"/></a>
+                </div>
+                <div class="map-container">
+                   <a href="https://www.komoot.com/tour/2353961211?share_token=asLv65kP9cKTZh1UTrtFbs3W4bbNimkO116Z3CnEztYQUnZimu&ref=profile" target="_blank" rel="nofollow noopener noreferrer"><img src="https://www.komoot.com/tour/2353961211/embed?share_token=asLv65kP9cKTZh1UTrtFbs3W4bbNimkO116Z3CnEztYQUnZimu&image=1&hm=true&profile=1&width=640&height=700" width="640" height="700"/></a>
+                </div>
+            </div>
+            <div class="provider-section">
+                <h2 class="provider-heading">
+                    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" style="fill:#fc4c02;"><path d="M748.9 512l-157-315.8L435 512l156.9 315.8L748.9 512zM385.2 546.9l-68.3-137.4-68.3 137.4h136.6z"/></svg>
+                    Strava
+                </h2>
+                <div class="strava-embed-placeholder" data-embed-type="route" data-embed-id="3368940482817946636" data-units="metric" data-full-width="true" data-style="standard" data-terrain="3d" data-from-embed="true"></div>
+                <div class="strava-embed-placeholder" data-embed-type="route" data-embed-id="3368940202552520126" data-units="metric" data-full-width="true" data-style="standard" data-terrain="3d" data-from-embed="true"></div>
+                <div class="strava-embed-placeholder" data-embed-type="route" data-embed-id="3353135478928168186" data-units="metric" data-full-width="true" data-style="standard" data-terrain="3d" data-from-embed="true"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Życzymy udanego wyjazdu i niezapomnianych wrażeń! 🚵‍♂️🏔️
+        </div>
+    </div>
+
+    <script src="https://strava-embeds.com/embed.js"></script>
+</body>
+</html>
